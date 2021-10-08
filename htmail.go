@@ -22,7 +22,7 @@ type sections struct {
 
 // MailComponents is used as a parameter for NewHTMaiL()
 type MailComponents struct {
-	Template  template.Template
+	Template  *template.Template
 	Subject   string
 	PreHeader string
 	To        mail.Address
@@ -32,7 +32,7 @@ type MailComponents struct {
 // NewHTMaiL can be used to get a new HTMaiL object
 func NewHTMaiL(c MailComponents) HTMaiL {
 	return HTMaiL{
-		template: &c.Template,
+		template: c.Template,
 		sections: sections{
 			Subject:   c.Subject,
 			PreHeader: c.PreHeader,
@@ -45,6 +45,13 @@ func NewHTMaiL(c MailComponents) HTMaiL {
 // AppendElement appends an html element to the message
 func (t *HTMaiL) AppendElement(elem template.HTML) {
 	t.sections.Body += elem
+}
+
+// AppendElements appends multiple html elements to the message
+func (t *HTMaiL) AppendElements(elems ...template.HTML) {
+	for _, elem := range elems {
+		t.sections.Body += elem
+	}
 }
 
 // GenerateMessage can be used to generate html to send in email
