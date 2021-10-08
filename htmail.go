@@ -55,16 +55,16 @@ func (t *HTMaiL) AppendElements(elems ...template.HTML) {
 }
 
 // GenerateMessage can be used to generate html to send in email
-func (t *HTMaiL) GenerateMessage() (bytes.Buffer, error) {
+func (t *HTMaiL) GenerateMessage() ([]byte, error) {
 	var message bytes.Buffer
 	message.Write(getHeader(t.to.Address, t.from.String(), t.sections.Subject))
 
 	err := t.template.Execute(&message, t.sections)
 	if err != nil {
-		return bytes.Buffer{}, err
+		return nil, err
 	}
 
-	return message, nil
+	return message.Bytes(), nil
 }
 
 func getHeader(to, from, subject string) []byte {
