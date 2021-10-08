@@ -10,7 +10,7 @@ import (
 type HTMaiL struct {
 	to       mail.Address
 	from     mail.Address
-	template template.Template
+	template *template.Template
 	sections sections
 }
 
@@ -30,9 +30,9 @@ type MailComponents struct {
 }
 
 // NewHTMaiL can be used to get a new HTMaiL object
-func NewHTMaiL(c *MailComponents) HTMaiL {
+func NewHTMaiL(c MailComponents) HTMaiL {
 	return HTMaiL{
-		template: c.Template,
+		template: &c.Template,
 		sections: sections{
 			Subject:   c.Subject,
 			PreHeader: c.PreHeader,
