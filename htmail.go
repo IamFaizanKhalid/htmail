@@ -67,6 +67,17 @@ func (t *HTMaiL) GenerateMessage() ([]byte, error) {
 	return message.Bytes(), nil
 }
 
+// GenerateMessageWithoutHeaders can be used to generate html message without headers to send in email
+func (t *HTMaiL) GenerateMessageWithoutHeaders() ([]byte, error) {
+	var message bytes.Buffer
+	err := t.template.Execute(&message, t.sections)
+	if err != nil {
+		return nil, err
+	}
+
+	return message.Bytes(), nil
+}
+
 func getHeader(to, from, subject string) []byte {
 	return []byte(fmt.Sprintf(
 		"To: %s\nFrom: %s \nSubject: %s\nMIME-version: 1.0;\nContent-Type: text/html;\r\n\r\n",
